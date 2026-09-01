@@ -2,22 +2,35 @@
 
 import Link from "next/link"
 import { useActionState } from "react"
-import { createApplication } from "../actions"
+import { updateApplication } from "../../actions"
+
+type EditApplicationFormProps = {
+  id: string
+  defaultValues: {
+    company: string
+    position: string
+    status: string
+    appliedAt: string
+  }
+}
 
 const initialState = {
   errors: {},
 }
 
-export default function NewApplicationPage() {
+export default function EditApplicationForm({
+  id,
+  defaultValues,
+}: EditApplicationFormProps) {
   const [state, formAction] = useActionState(
-    createApplication,
+    updateApplication.bind(null, id),
     initialState
   )
 
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold">
-        Add Application
+        Edit Application
       </h1>
 
       <form action={formAction} className="mt-8 space-y-4">
@@ -26,6 +39,7 @@ export default function NewApplicationPage() {
           <input
             id="company"
             name="company"
+            defaultValue={defaultValues.company}
             className="block border"
             aria-invalid={Boolean(state.errors?.company)}
           />
@@ -41,6 +55,7 @@ export default function NewApplicationPage() {
           <input
             id="position"
             name="position"
+            defaultValue={defaultValues.position}
             className="block border"
             aria-invalid={Boolean(state.errors?.position)}
           />
@@ -57,6 +72,7 @@ export default function NewApplicationPage() {
             id="appliedAt"
             name="appliedAt"
             type="date"
+            defaultValue={defaultValues.appliedAt}
             className="block border"
             aria-invalid={Boolean(state.errors?.appliedAt)}
           />
@@ -72,9 +88,9 @@ export default function NewApplicationPage() {
           <select
             id="status"
             name="status"
+            defaultValue={defaultValues.status}
             className="block border"
             aria-invalid={Boolean(state.errors?.status)}
-            defaultValue="APPLIED"
           >
             <option value="APPLIED">Applied</option>
             <option value="INTERVIEW">Interview</option>
@@ -93,11 +109,11 @@ export default function NewApplicationPage() {
             type="submit"
             className="rounded bg-black px-4 py-2 text-white"
           >
-            Add Application
+            Save Changes
           </button>
 
           <Link
-            href="/applications"
+            href={`/applications/${id}`}
             className="rounded border px-4 py-2"
           >
             Cancel

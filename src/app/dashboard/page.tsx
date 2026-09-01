@@ -1,20 +1,69 @@
-import { applications } from "@/data/applications"
+import { db } from "@/prisma/db"
 
-export default function DashboardPage() {
-  const sevenDaysAgo = new Date()
+export default async function DashboardPage() {
+  const applications =
+    await db.orm.public.Application.all()
 
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-  sevenDaysAgo.setHours(0, 0, 0, 0)
+  const totalApplications = applications.length
 
-  const recentApplications = applications.filter(
-    (application) =>
-      new Date(application.appliedAt) >= sevenDaysAgo
-  )
+  const appliedCount = applications.filter(
+    (application) => application.status === "APPLIED"
+  ).length
+
+  const interviewCount = applications.filter(
+    (application) => application.status === "INTERVIEW"
+  ).length
+
+  const offerCount = applications.filter(
+    (application) => application.status === "OFFER"
+  ).length
+
+  const rejectedCount = applications.filter(
+    (application) => application.status === "REJECTED"
+  ).length
 
   return (
-    <div>
-      <p>Applications last 7 days</p>
-      <p>{recentApplications.length}</p>
-    </div>
+    <main className="p-8">
+      <h1 className="text-3xl font-bold">
+        Dashboard
+      </h1>
+
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="rounded border p-4">
+          <p>Total</p>
+          <p className="text-2xl font-bold">
+            {totalApplications}
+          </p>
+        </div>
+
+        <div className="rounded border p-4">
+          <p>Applied</p>
+          <p className="text-2xl font-bold">
+            {appliedCount}
+          </p>
+        </div>
+
+        <div className="rounded border p-4">
+          <p>Interviews</p>
+          <p className="text-2xl font-bold">
+            {interviewCount}
+          </p>
+        </div>
+
+        <div className="rounded border p-4">
+          <p>Offers</p>
+          <p className="text-2xl font-bold">
+            {offerCount}
+          </p>
+        </div>
+
+        <div className="rounded border p-4">
+          <p>Rejected</p>
+          <p className="text-2xl font-bold">
+            {rejectedCount}
+          </p>
+        </div>
+      </div>
+    </main>
   )
 }

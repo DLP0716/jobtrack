@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { db } from "@/prisma/db"
+import { deleteApplication } from "../actions"
 
 type Props = {
   params: Promise<{
@@ -44,6 +45,15 @@ export default async function ApplicationPage({
         >
           Edit
         </Link>
+        
+        <form action={deleteApplication.bind(null, application.id)}>
+          <button
+            type="submit"
+            className="rounded border px-4 py-2"
+          >
+            Delete
+          </button>
+        </form>
 
         <Link
           href="/applications"
