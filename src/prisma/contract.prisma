@@ -1,0 +1,10 @@
+// use prisma-next
+model Application {
+  id        String   @id @default(uuid())
+  company   String
+  position  String
+  status    String
+  appliedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt temporal.updatedAt()
+}

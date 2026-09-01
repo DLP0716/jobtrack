@@ -1,7 +1,14 @@
 import Link from "next/link"
-import { applications } from "@/data/applications"
+import { db } from "@/prisma/db"
 
-export default function ApplicationsPage() {
+export default async function ApplicationsPage() {
+  const applications =
+    await db.orm.public.Application
+      .orderBy((application) =>
+        application.appliedAt.desc()
+      )
+      .all()
+
   return (
     <main className="p-8">
       <div className="flex items-center justify-between">
@@ -13,7 +20,7 @@ export default function ApplicationsPage() {
           href="/applications/new"
           className="rounded bg-black px-4 py-2 text-white"
         >
-          Add application
+          Add Application
         </Link>
       </div>
 
@@ -29,10 +36,7 @@ export default function ApplicationsPage() {
             </h2>
 
             <p>{application.company}</p>
-
-            <p className="mt-2 text-sm text-gray-500">
-              {application.status}
-            </p>
+            <p>{application.status}</p>
           </Link>
         ))}
       </div>

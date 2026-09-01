@@ -1,4 +1,7 @@
+// src/app/applications/new/page.tsx
+
 import Link from "next/link"
+import { createApplication } from "./actions"
 
 export default function NewApplicationPage() {
   return (
@@ -7,25 +10,50 @@ export default function NewApplicationPage() {
         Add Application
       </h1>
 
-      <form className="mt-8">
-        {/* form fields */}
+      <form action={createApplication} className="mt-8 space-y-4">
+        <div>
+          <label htmlFor="company">Company</label>
+          <input
+            id="company"
+            name="company"
+            className="block border"
+          />
+        </div>
 
-        <label>
-          Company
-          <input name="company" />
-        </label>
+        <div>
+          <label htmlFor="position">Position</label>
+          <input
+            id="position"
+            name="position"
+            className="block border"
+          />
+        </div>
 
-        <label>
-          Position
-          <input name="position" />
-        </label>
+        <div>
+          <label htmlFor="appliedAt">Date Applied</label>
+          <input
+            id="appliedAt"
+            name="appliedAt"
+            type="date"
+            className="block border"
+          />
+        </div>
 
-        <label>
-          Date Applied
-          <input name="appliedAt" type="date" />
-        </label>
+        <div>
+          <label htmlFor="status">Status</label>
+          <select
+            id="status"
+            name="status"
+            className="block border"
+          >
+            <option value="APPLIED">Applied</option>
+            <option value="INTERVIEW">Interview</option>
+            <option value="OFFER">Offer</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
 
-        <div className="mt-6 flex gap-4">
+        <div className="flex gap-4">
           <button
             type="submit"
             className="rounded bg-black px-4 py-2 text-white"

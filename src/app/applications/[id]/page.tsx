@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { applications } from "@/data/applications"
+import { db } from "@/prisma/db"
 
 type Props = {
   params: Promise<{
@@ -12,9 +12,10 @@ export default async function ApplicationPage({
 }: Props) {
   const { id } = await params
 
-  const application = applications.find(
-    (application) => application.id === id
-  )
+  const application =
+  await db.orm.public.Application.first({
+    id,
+  })
 
   if (!application) {
     notFound()
