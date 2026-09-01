@@ -4,7 +4,7 @@ model Application {
   company   String
   position  String
   status    String
-  appliedAt DateTime
-  createdAt DateTime @default(now())
+  appliedAt temporal.timestamptz(3)
+  createdAt temporal.createdAt()
   updatedAt temporal.updatedAt()
 }

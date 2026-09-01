@@ -19,7 +19,10 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 3
+                  }
                 }
               },
               "company": {
@@ -108,7 +111,10 @@
                 "appliedAt": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "nativeType": "timestamptz",
-                  "nullable": false
+                  "nullable": false,
+                  "typeParams": {
+                    "precision": 3
+                  }
                 },
                 "company": {
                   "codecId": "pg/text@1",
@@ -160,7 +166,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "67268f1d3777a2d6adb9ced0ce55c379dc3c13c085f126b550ca77828abd99e3"
+    "storageHash": "55ee1213b118be9c0f557ba305a97ba574c36a9c505da5c85917ea4574cb9a73"
   },
   "execution": {
     "executionHash": "22f30e7074d21da93aacd3aee57481536c36f6336658e0f6370b6b42518539a9",
