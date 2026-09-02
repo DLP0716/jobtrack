@@ -6,6 +6,7 @@ type Props = {
   searchParams: Promise<{
     search?: string
     status?: string
+    page?: string
   }>
 }
 
@@ -16,6 +17,14 @@ export default async function ApplicationsPage({
 
   const search = params.search?.trim() ?? ""
   const status = params.status?.trim() ?? ""
+
+  const page = Math.max(
+    1,
+    Number.parseInt(params.page ?? "1", 10) || 1
+  )
+
+  const pageSize = 5
+  const skip = (page - 1) * pageSize
 
   let query = db.orm.public.Application
 
@@ -35,8 +44,29 @@ export default async function ApplicationsPage({
   }
 
   const applications = await query
-    .orderBy((application) => application.appliedAt.desc())
+    .orderBy([
+      (application) => application.appliedAt.desc(),
+      (application) => application.id.desc(),
+    ])
+    .offset(skip)
+    .limit(pageSize)
     .all()
+
+  function buildPageUrl(targetPage: number) {
+    const urlParams = new URLSearchParams()
+
+    if (search) {
+      urlParams.set("search", search)
+    }
+
+    if (status) {
+      urlParams.set("status", status)
+    }
+
+    urlParams.set("page", targetPage.toString())
+
+    return `/applications?${urlParams.toString()}`
+  }
 
   return (
     <main className="p-8">
@@ -107,6 +137,30 @@ export default async function ApplicationsPage({
               <p>{application.status}</p>
             </Link>
           ))
+        )}
+      </div>
+
+      <div className="mt-8 flex items-center gap-4">
+        {page > 1 && (
+          <Link
+            href={buildPageUrl(page - 1)}
+            className="rounded border px-4 py-2"
+          >
+            Previous
+          </Link>
+        )}
+
+        <span className="px-4 py-2">
+          Page {page}
+        </span>
+
+        {applications.length === pageSize && (
+          <Link
+            href={buildPageUrl(page + 1)}
+            className="rounded border px-4 py-2"
+          >
+            Next
+          </Link>
         )}
       </div>
     </main>
